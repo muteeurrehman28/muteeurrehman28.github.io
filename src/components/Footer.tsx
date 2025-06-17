@@ -1,53 +1,53 @@
 import { FiGithub, FiLinkedin, FiTwitter } from "react-icons/fi";
+import { HiOutlineMail } from "react-icons/hi";
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
 
-  const socialLinks = [
-    {
-      name: "GitHub",
-      icon: FiGithub,
-      url: "https://github.com/yourusername",
-    },
-    {
-      name: "LinkedIn",
-      icon: FiLinkedin,
-      url: "https://linkedin.com/in/yourusername",
-    },
-    {
-      name: "Twitter",
-      icon: FiTwitter,
-      url: "https://twitter.com/yourusername",
-    },
-  ];
-
   return (
-    <footer className="bg-primary-900 text-primary-50 py-12">
+    <footer className="bg-white dark:bg-primary-800 py-8">
       <div className="container mx-auto px-4">
-        <div className="max-w-4xl mx-auto">
-          <div className="flex flex-col items-center space-y-8">
-            <div className="flex space-x-6">
-              {socialLinks.map((link) => (
-                <a
-                  key={link.name}
-                  href={link.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-primary-400 hover:text-secondary-400 transition-colors duration-300"
-                  aria-label={link.name}
-                >
-                  <link.icon className="w-6 h-6" />
-                </a>
-              ))}
-            </div>
-            <div className="text-center">
-              <p className="text-primary-400">
-                © {currentYear} Your Name. All rights reserved.
-              </p>
-              <p className="text-primary-500 text-sm mt-2">
-                Built with React, TypeScript, and Tailwind CSS
-              </p>
-            </div>
+        <div className="flex flex-col md:flex-row justify-between items-center">
+          <div className="mb-4 md:mb-0">
+            <p className="text-primary-700 dark:text-primary-300">
+              © {currentYear} Mutee Ur Rehman. All rights reserved.
+            </p>
+          </div>
+          <div className="flex space-x-6">
+            <a
+              href="https://github.com/muteeurrehman28"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-primary-600 dark:text-primary-400 hover:text-secondary-600 dark:hover:text-secondary-400 transition-colors"
+              aria-label="GitHub"
+            >
+              <FiGithub className="w-5 h-5" />
+            </a>
+            <a
+              href="https://linkedin.com/in/mutee-ur-rehman"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-primary-600 dark:text-primary-400 hover:text-secondary-600 dark:hover:text-secondary-400 transition-colors"
+              aria-label="LinkedIn"
+            >
+              <FiLinkedin className="w-5 h-5" />
+            </a>
+            <a
+              href="https://twitter.com/muteeurrehman"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-primary-600 dark:text-primary-400 hover:text-secondary-600 dark:hover:text-secondary-400 transition-colors"
+              aria-label="Twitter"
+            >
+              <FiTwitter className="w-5 h-5" />
+            </a>
+            <a
+              href="mailto:muteeurrehman28@gmail.com"
+              className="text-primary-600 dark:text-primary-400 hover:text-secondary-600 dark:hover:text-secondary-400 transition-colors"
+              aria-label="Email"
+            >
+              <HiOutlineMail className="w-5 h-5" />
+            </a>
           </div>
         </div>
       </div>

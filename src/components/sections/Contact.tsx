@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { FiMail, FiMapPin, FiPhone } from "react-icons/fi";
+import { FiMail, FiPhone } from "react-icons/fi";
 import emailjs from "@emailjs/browser";
 
 const Contact = () => {
@@ -10,43 +10,37 @@ const Contact = () => {
     message: "",
   });
   const [status, setStatus] = useState({
-    type: "",
+    type: "", // idle, loading, success, error
     message: "",
   });
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setStatus({ type: "loading", message: "Sending message..." });
-
-    try {
-      await emailjs.send(
-        "YOUR_SERVICE_ID",
-        "YOUR_TEMPLATE_ID",
-        {
-          from_name: formData.name,
-          from_email: formData.email,
-          message: formData.message,
-        },
-        "YOUR_PUBLIC_KEY"
-      );
-
-      setStatus({
-        type: "success",
-        message: "Message sent successfully! I'll get back to you soon.",
-      });
-      setFormData({ name: "", email: "", message: "" });
-    } catch (error) {
-      setStatus({
-        type: "error",
-        message: "Failed to send message. Please try again later.",
-      });
-    }
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setStatus({ type: "loading", message: "" });
+
+    try {
+      const templateParams = {
+        from_name: formData.name,
+        from_email: formData.email,
+        message: formData.message,
+      };
+
+      await emailjs.send(
+        'YOUR_SERVICE_ID',
+        'YOUR_TEMPLATE_ID',
+        templateParams,
+        'YOUR_PUBLIC_KEY'
+      );
+      setStatus({ type: "success", message: "Message sent successfully!" });
+      setFormData({ name: "", email: "", message: "" }); // Clear form
+    } catch (error) {
+      console.error("Failed to send message:", error);
+      setStatus({ type: "error", message: "Failed to send message. Please try again later." });
+    }
   };
 
   return (
@@ -108,6 +102,7 @@ const Contact = () => {
               </div>
             </motion.div>
 
+            {/* Contact Form */}
             <motion.div
               initial={{ opacity: 0, x: 20 }}
               whileInView={{ opacity: 1, x: 0 }}
@@ -175,12 +170,8 @@ const Contact = () => {
                 </button>
                 {status.message && (
                   <p
-                    className={`text-sm ${
-                      status.type === "success"
-                        ? "text-green-600 dark:text-green-400"
-                        : status.type === "error"
-                        ? "text-red-600 dark:text-red-400"
-                        : "text-primary-700 dark:text-primary-300"
+                    className={`text-center text-sm ${
+                      status.type === "error" ? "text-red-500" : "text-green-500"
                     }`}
                   >
                     {status.message}

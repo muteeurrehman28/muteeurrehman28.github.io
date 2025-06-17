@@ -50,7 +50,8 @@ const Certifications = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: index * 0.1 }}
-                className="bg-white dark:bg-primary-700 rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300"
+                whileHover={{ rotateY: 10, scale: 1.05 }}
+                className="bg-white dark:bg-primary-700 rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 cursor-pointer"
               >
                 <div className="p-6">
                   <img

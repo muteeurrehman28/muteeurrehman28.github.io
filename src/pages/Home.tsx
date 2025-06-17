@@ -7,6 +7,7 @@ import Services from '../components/sections/Services';
 import Testimonials from '../components/sections/Testimonials';
 import Certifications from '../components/sections/Certifications';
 import Contact from '../components/sections/Contact';
+import Blog from '../components/sections/Blog';
 
 const Home = () => {
   useEffect(() => {
@@ -23,6 +24,7 @@ const Home = () => {
       <Projects />
       <Testimonials />
       <Certifications />
+      <Blog />
       <Contact />
     </main>
   );

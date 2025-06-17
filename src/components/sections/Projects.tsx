@@ -33,6 +33,12 @@ const Projects = () => {
     },
   ];
 
+  const [imageLoaded, setImageLoaded] = useState<{ [key: number]: boolean }>({});
+
+  const handleImageLoad = (id: number) => {
+    setImageLoaded((prev) => ({ ...prev, [id]: true }));
+  };
+
   return (
     <section id="projects" className="py-20 bg-primary-50 dark:bg-primary-900">
       <div className="container mx-auto px-4">
@@ -54,13 +60,23 @@ const Projects = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: index * 0.1 }}
-                className="flex flex-col bg-white dark:bg-primary-800 rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow h-full"
+                whileHover={{ scale: 1.03 }}
+                className="flex flex-col bg-white dark:bg-primary-800 rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow h-full cursor-pointer"
               >
-                <div className="relative group aspect-video">
+                <div className="relative group aspect-video bg-primary-200 dark:bg-primary-700 animate-pulse">
+                  {!imageLoaded[index] && (
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <div className="h-10 w-10 border-4 border-secondary-600 border-t-transparent rounded-full animate-spin"></div>
+                    </div>
+                  )}
                   <img
                     src={project.image}
                     alt={project.title}
-                    className="w-full h-full object-cover"
+                    className={`w-full h-full object-cover transition-opacity duration-500 ${
+                      imageLoaded[index] ? 'opacity-100' : 'opacity-0'
+                    }`}
+                    loading="lazy"
+                    onLoad={() => handleImageLoad(index)}
                   />
                   <div className="absolute inset-0 bg-primary-900 bg-opacity-0 group-hover:bg-opacity-75 transition-all duration-300 flex items-center justify-center">
                     <div className="flex gap-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">

@@ -1,27 +1,25 @@
+import { Suspense, lazy } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { HelmetProvider } from 'react-helmet-async';
 import { useEffect } from 'react';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
-import { Suspense } from 'react';
+import MainLayout from './components/MainLayout';
+import CustomCursor from './components/CustomCursor';
+import ScrollProgress from './components/ScrollProgress';
+import LoadingSpinner from './components/LoadingSpinner';
 
-// Layouts
-import MainLayout from './layouts/MainLayout';
-
-// Lazy-loaded Pages
-import { lazy } from 'react';
+// Lazy load pages
 const Home = lazy(() => import('./pages/Home'));
 const NotFound = lazy(() => import('./pages/NotFound'));
 
-// Components
-import ScrollToTop from './components/ScrollToTop';
-
-// Loading component
-const Loading = () => (
-  <div className="min-h-screen flex items-center justify-center bg-primary">
-    <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-secondary"></div>
-  </div>
-);
+// Configure router with future flags
+const router = {
+  future: {
+    v7_startTransition: true,
+    v7_relativeSplatPath: true
+  }
+};
 
 function App() {
   useEffect(() => {
@@ -33,16 +31,17 @@ function App() {
 
   return (
     <HelmetProvider>
-      <Router>
-        <ScrollToTop />
-        <Suspense fallback={<Loading />}>
-          <Routes>
-            <Route path="/" element={<MainLayout />}>
-              <Route index element={<Home />} />
+      <Router {...router}>
+        <CustomCursor />
+        <ScrollProgress />
+        <MainLayout>
+          <Suspense fallback={<LoadingSpinner />}>
+            <Routes>
+              <Route path="/" element={<Home />} />
               <Route path="*" element={<NotFound />} />
-            </Route>
-          </Routes>
-        </Suspense>
+            </Routes>
+          </Suspense>
+        </MainLayout>
       </Router>
     </HelmetProvider>
   );

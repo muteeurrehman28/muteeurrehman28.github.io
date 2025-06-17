@@ -38,6 +38,7 @@ const Navbar = () => {
     { name: 'About', path: '/#about' },
     { name: 'Skills', path: '/#skills' },
     { name: 'Projects', path: '/#projects' },
+    { name: 'Articles', path: '/#blog' },
     { name: 'Contact', path: '/#contact' },
   ];
 
@@ -56,7 +57,7 @@ const Navbar = () => {
             to="/"
             className="text-primary-900 dark:text-primary-50 font-bold text-xl"
           >
-            Your Name
+            Mutee Ur Rehman
           </Link>
 
           {/* Desktop Navigation */}
@@ -65,9 +66,15 @@ const Navbar = () => {
               <Link
                 key={link.name}
                 to={link.path}
-                className="text-primary-700 dark:text-primary-300 hover:text-secondary-600 dark:hover:text-secondary-400 transition-colors"
+                className="relative text-primary-700 dark:text-primary-300 hover:text-secondary-600 dark:hover:text-secondary-400 transition-colors group"
               >
                 {link.name}
+                <motion.span
+                  className="absolute left-0 bottom-0 h-0.5 bg-secondary-600 dark:bg-secondary-400"
+                  initial={{ width: 0, x: "-50%", left: "50%" }}
+                  whileHover={{ width: "100%", x: "0%", left: "0%" }}
+                  transition={{ duration: 0.3, ease: "easeInOut" }}
+                />
               </Link>
             ))}
             <button
@@ -80,7 +87,7 @@ const Navbar = () => {
           </div>
 
           {/* Mobile Menu Button */}
-          <div className="md:hidden flex items-center space-x-4">
+          <div className="md:hidden flex items-center space-x-2">
             <button
               onClick={toggleTheme}
               className="p-2 rounded-full text-primary-700 dark:text-primary-300 hover:bg-primary-100 dark:hover:bg-primary-800 transition-colors"
