@@ -17,10 +17,6 @@ const nextConfig = {
   },
   // Ensure trailing slashes are handled correctly
   trailingSlash: true,
-  // Disable server-side features since we're using static export
-  experimental: {
-    appDir: false,
-  },
   // Add assetPrefix for GitHub Pages
   assetPrefix: process.env.NEXT_PUBLIC_BASE_PATH || '',
   // Ensure proper MIME types
