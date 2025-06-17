@@ -27,5 +27,16 @@
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
+    <script>
+      // Add MIME type for JavaScript modules
+      document.addEventListener('DOMContentLoaded', () => {
+        const scripts = document.getElementsByTagName('script');
+        for (let script of scripts) {
+          if (script.type === 'module') {
+            script.type = 'application/javascript';
+          }
+        }
+      });
+    </script>
   </body>
 </html>
