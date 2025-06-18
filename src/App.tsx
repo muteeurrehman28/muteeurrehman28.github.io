@@ -1,50 +1,57 @@
-import { Suspense, lazy } from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { Routes, Route } from 'react-router-dom';
 import { HelmetProvider } from 'react-helmet-async';
-import { useEffect } from 'react';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
-import MainLayout from './components/MainLayout';
-import CustomCursor from './components/CustomCursor';
-import ScrollProgress from './components/ScrollProgress';
-import LoadingSpinner from './components/LoadingSpinner';
+import Navbar from './components/Navbar';
+import Footer from './components/Footer';
+import ScrollToTop from './components/ScrollToTop';
+import Hero from './components/Hero';
+import About from './components/About';
+import Skills from './components/Skills';
+import Experience from './components/Experience';
+import Education from './components/Education';
+import Projects from './components/Projects';
+import Testimonials from './components/Testimonials';
+import Certifications from './components/Certifications';
+import Services from './components/Services';
+import Blog from './components/Blog';
+import Stats from './components/Stats';
+import Contact from './components/Contact';
+import NotFound from './components/NotFound';
 
-// Lazy load pages
-const Home = lazy(() => import('./pages/Home'));
-const NotFound = lazy(() => import('./pages/NotFound'));
-
-// Configure router with future flags
-const router = {
-  future: {
-    v7_startTransition: true,
-    v7_relativeSplatPath: true
-  }
-};
-
-function App() {
+const App = () => {
   useEffect(() => {
     AOS.init({
       duration: 1000,
       once: true,
+      easing: 'ease-in-out',
     });
   }, []);
 
   return (
     <HelmetProvider>
-      <Router {...router}>
-        <CustomCursor />
-        <ScrollProgress />
-        <MainLayout>
-          <Suspense fallback={<LoadingSpinner />}>
-            <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="*" element={<NotFound />} />
-            </Routes>
-          </Suspense>
-        </MainLayout>
-      </Router>
+      <div className="min-h-screen bg-white dark:bg-dark-100 text-gray-900 dark:text-white transition-colors duration-300">
+        <Navbar />
+        <main>
+          <Hero />
+          <About />
+          <Skills />
+          <Experience />
+          <Education />
+          <Services />
+          <Projects />
+          <Testimonials />
+          <Certifications />
+          <Blog />
+          <Stats />
+          <Contact />
+        </main>
+        <Footer />
+        <ScrollToTop />
+      </div>
     </HelmetProvider>
   );
-}
+};
 
-export default App;
+export default App; 

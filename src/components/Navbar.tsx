@@ -1,134 +1,120 @@
 import { useState, useEffect } from 'react';
-import { Link, useLocation } from 'react-router-dom';
-import { motion } from 'framer-motion';
+import { Link } from 'react-scroll';
 import { FiMenu, FiX, FiSun, FiMoon } from 'react-icons/fi';
+import { useDarkMode } from '../hooks/useDarkMode';
 
 const Navbar = () => {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isDarkMode, setIsDarkMode] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const location = useLocation();
+  const { theme, toggleTheme } = useDarkMode();
 
   useEffect(() => {
     const handleScroll = () => {
-      setScrolled(window.scrollY > 20);
+      setScrolled(window.scrollY > 50);
     };
-
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  useEffect(() => {
-    const isDark = localStorage.getItem('darkMode') === 'true';
-    setIsDarkMode(isDark);
-    if (isDark) {
-      document.documentElement.classList.add('dark');
-    }
-  }, []);
-
-  const toggleTheme = () => {
-    const newMode = !isDarkMode;
-    setIsDarkMode(newMode);
-    localStorage.setItem('darkMode', String(newMode));
-    document.documentElement.classList.toggle('dark');
-  };
-
   const navLinks = [
-    { name: 'Home', path: '/' },
-    { name: 'About', path: '/#about' },
-    { name: 'Skills', path: '/#skills' },
-    { name: 'Projects', path: '/#projects' },
-    { name: 'Articles', path: '/#blog' },
-    { name: 'Contact', path: '/#contact' },
+    { name: 'Home', to: 'home' },
+    { name: 'About', to: 'about' },
+    { name: 'Skills', to: 'skills' },
+    { name: 'Experience', to: 'experience' },
+    { name: 'Education', to: 'education' },
+    { name: 'Services', to: 'services' },
+    { name: 'Projects', to: 'projects' },
+    { name: 'Testimonials', to: 'testimonials' },
+    { name: 'Blog', to: 'blog' },
+    { name: 'Contact', to: 'contact' },
   ];
 
   return (
     <nav
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+      className={`fixed w-full z-50 transition-all duration-300 ${
         scrolled
-          ? 'bg-white/90 dark:bg-primary-900/90 backdrop-blur-sm shadow-lg'
+          ? 'bg-white dark:bg-dark-100 shadow-lg'
           : 'bg-transparent'
       }`}
     >
-      <div className="container mx-auto px-4">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
-          {/* Logo */}
-          <Link
-            to="/"
-            className="text-primary-900 dark:text-primary-50 font-bold text-xl"
-          >
-            Mutee Ur Rehman
-          </Link>
-
-          {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center space-x-8">
-            {navLinks.map((link) => (
-              <Link
-                key={link.name}
-                to={link.path}
-                className="relative text-primary-700 dark:text-primary-300 hover:text-secondary-600 dark:hover:text-secondary-400 transition-colors group"
-              >
-                {link.name}
-                <motion.span
-                  className="absolute left-0 bottom-0 h-0.5 bg-secondary-600 dark:bg-secondary-400"
-                  initial={{ width: 0, x: "-50%", left: "50%" }}
-                  whileHover={{ width: "100%", x: "0%", left: "0%" }}
-                  transition={{ duration: 0.3, ease: "easeInOut" }}
-                />
-              </Link>
-            ))}
-            <button
-              onClick={toggleTheme}
-              className="p-2 rounded-full text-primary-700 dark:text-primary-300 hover:bg-primary-100 dark:hover:bg-primary-800 transition-colors"
-              aria-label="Toggle theme"
+          <div className="flex-shrink-0">
+            <Link
+              to="home"
+              className="text-2xl font-bold text-primary-600 dark:text-primary-400 cursor-pointer"
             >
-              {isDarkMode ? <FiSun /> : <FiMoon />}
-            </button>
+              Mutee ur Rehman
+            </Link>
           </div>
 
-          {/* Mobile Menu Button */}
-          <div className="md:hidden flex items-center space-x-2">
+          {/* Desktop Navigation */}
+          <div className="hidden lg:block">
+            <div className="ml-10 flex items-center space-x-4">
+              {navLinks.map((link) => (
+                <Link
+                  key={link.name}
+                  to={link.to}
+                  spy={true}
+                  smooth={true}
+                  offset={-70}
+                  duration={500}
+                  className="text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 px-3 py-2 rounded-md text-sm font-medium cursor-pointer transition-colors"
+                >
+                  {link.name}
+                </Link>
+              ))}
+              <button
+                onClick={toggleTheme}
+                className="p-2 rounded-lg bg-gray-100 dark:bg-dark-200 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-dark-300 transition-colors"
+                aria-label="Toggle dark mode"
+              >
+                {theme === 'dark' ? <FiSun /> : <FiMoon />}
+              </button>
+            </div>
+          </div>
+
+          {/* Mobile menu button */}
+          <div className="lg:hidden flex items-center">
             <button
               onClick={toggleTheme}
-              className="p-2 rounded-full text-primary-700 dark:text-primary-300 hover:bg-primary-100 dark:hover:bg-primary-800 transition-colors"
-              aria-label="Toggle theme"
+              className="p-2 mr-2 rounded-lg bg-gray-100 dark:bg-dark-200 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-dark-300 transition-colors"
+              aria-label="Toggle dark mode"
             >
-              {isDarkMode ? <FiSun /> : <FiMoon />}
+              {theme === 'dark' ? <FiSun /> : <FiMoon />}
             </button>
             <button
-              onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className="p-2 rounded-md text-primary-700 dark:text-primary-300 hover:bg-primary-100 dark:hover:bg-primary-800 transition-colors"
-              aria-label="Toggle menu"
+              onClick={() => setIsOpen(!isOpen)}
+              className="inline-flex items-center justify-center p-2 rounded-md text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 focus:outline-none"
+              aria-expanded="false"
             >
-              {isMenuOpen ? <FiX /> : <FiMenu />}
+              <span className="sr-only">Open main menu</span>
+              {isOpen ? <FiX className="h-6 w-6" /> : <FiMenu className="h-6 w-6" />}
             </button>
           </div>
         </div>
       </div>
 
-      {/* Mobile Menu */}
-      {isMenuOpen && (
-        <motion.div
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -20 }}
-          className="md:hidden bg-white dark:bg-primary-800 shadow-lg"
-        >
-          <div className="container mx-auto px-4 py-4">
-            <div className="flex flex-col space-y-4">
-              {navLinks.map((link) => (
-                <Link
-                  key={link.name}
-                  to={link.path}
-                  className="block px-3 py-2 rounded-md text-primary-700 dark:text-primary-300 hover:text-secondary-600 dark:hover:text-secondary-400 hover:bg-primary-50 dark:hover:bg-primary-700/50 transition-colors"
-                  onClick={() => setIsMenuOpen(false)}
-                >
-                  {link.name}
-                </Link>
-              ))}
-            </div>
+      {/* Mobile Navigation */}
+      {isOpen && (
+        <div className="lg:hidden">
+          <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3 bg-white dark:bg-dark-100 shadow-lg max-h-96 overflow-y-auto">
+            {navLinks.map((link) => (
+              <Link
+                key={link.name}
+                to={link.to}
+                spy={true}
+                smooth={true}
+                offset={-70}
+                duration={500}
+                className="text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 block px-3 py-2 rounded-md text-base font-medium cursor-pointer transition-colors"
+                onClick={() => setIsOpen(false)}
+              >
+                {link.name}
+              </Link>
+            ))}
           </div>
-        </motion.div>
+        </div>
       )}
     </nav>
   );
